@@ -23,7 +23,9 @@ var colors = [
 	vec4(0.0, 1.0, 1.0, 1.0)  // cyan
 ];
 
-window.onload = function init() {
+init();
+
+function init() {
 	canvas = document.getElementById('gl-canvas');
 	gl = WebGLUtils.setupWebGL(canvas); 
 	

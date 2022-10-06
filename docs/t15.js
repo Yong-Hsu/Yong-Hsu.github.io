@@ -1,6 +1,4 @@
 console.trace("Started");
-refresh();
-// history.go();
 
 /** @type {WebGLRenderingContext} */
 var gl;
@@ -8,7 +6,10 @@ var vertices;
 var theta;
 var thetaLoc;
 
-window.onload = function init() {
+init();
+
+function init() {
+	console.log("onload");
 	// initialize_the_system
 	const canvas = document.getElementById('gl-canvas');
 	gl = WebGLUtils.setupWebGL(canvas); //found in
@@ -75,14 +76,4 @@ function render()
 
 		requestAnimationFrame(render);
 	}, 20);
-}
-
-function refresh() {    
-	setTimeout(fresh, 3*60*60*1000);
-
-	function fresh(){
-		console.log('refreshed');
-        // location.reload();
-		history.go();
-	}	
 }

@@ -1,8 +1,4 @@
 <section>
-<!--<pre> <code data-trim> -->
-<script src="./angel_common/initShaders.js"></script>
-<script src="./angel_common/webgl-utils.js"></script>
-<script src="./angel_common/MV.js"></script>
 <script src="t15.js"></script>
 
 <script id="vertex-shader" type="x-shader/x-vertex">
@@ -26,11 +22,6 @@
 	{
 		gl_FragColor = vec4(0.0, 0.0, 0.0, 1.0);
 	}
-</script>
-
-<script>
-
-
 </script>
 
 <canvas id='gl-canvas' height="512" width="512"/><canvas>
