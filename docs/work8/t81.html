@@ -1,0 +1,46 @@
+<html lang="en">
+<title>Worksheet 1 - Part 1</title>
+<script src="../angel_common/initShaders.js"></script>
+<script src="../angel_common/webgl-utils.js"></script>
+<script src="../angel_common/MV.js"></script>
+<script src="work8/t81.js"></script>
+
+<script id="vertex-shader" type="x-shader/x-vertex">
+	attribute vec4 vPosition;
+
+	uniform mat4 modelViewMatrix;
+	uniform mat4 projectionMatrix;
+
+	attribute vec2 vTexCoord;
+	varying vec2 fTexCoord;
+	
+	void main()
+	{
+		gl_Position = projectionMatrix * modelViewMatrix * vPosition;
+		fTexCoord = vTexCoord;
+	}
+</script>
+
+<script id="fragment-shader" type="x-shader/x-fragment">
+	precision mediump float;
+
+	uniform sampler2D texMap;
+	uniform sampler2D texMap1;
+	varying vec2 fTexCoord;
+	uniform float type;
+	
+	void main() {
+		if (type < 0.5) 
+			gl_FragColor = texture2D(texMap, fTexCoord);
+		else 
+			gl_FragColor = texture2D(texMap1, fTexCoord);
+	}
+</script>
+
+<body>
+	<canvas id='gl-canvas' height="512" width="512">
+		webgl is not available
+	</canvas>
+</body>
+
+</html>
