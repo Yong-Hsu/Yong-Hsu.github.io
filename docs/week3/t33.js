@@ -34,7 +34,8 @@ var vertexColors = Array(8).fill([1.0, 0.0, .0, 1.0])
 indices = indices.concat(indices.map(element => element + 8), 
 						indices.map(element => element + 16));
 
-window.onload = function init() {
+init();
+function init() {
 	const canvas = document.getElementById('gl-canvas');
 	gl = WebGLUtils.setupWebGL(canvas); //found in
 	

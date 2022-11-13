@@ -15,7 +15,8 @@ var vertexColors = [
 	[0.0, 1.0, 1.0, 1.0]  // cyan
 ];
 
-window.onload = function init() {
+init();
+function init() {
 	const canvas = document.getElementById('gl-canvas');
 	gl = WebGLUtils.setupWebGL(canvas); //found in
 	

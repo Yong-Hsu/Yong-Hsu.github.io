@@ -1,5 +1,4 @@
 <!-- docs/_sidebar.md -->
-
 <!-- docsify serve docs -->
 
 * [ReadMe](/) 
@@ -13,6 +12,18 @@
     - [Part3](week1/t13.html)
     - [Part4](week1/t14.html)
     - [Part5](week1/t15.html)
+
+- 02561 Worksheet2
+    - [Part1](week2/t21.html)
+    - [Part2](week2/t22.html)
+    - [Part3](week2/t23.html)
+    - [Part4](week2/t24.html)
+
+- 02561 Worksheet3
+    - [Part1](week3/t31.html)
+    - [Part2](week3/t32.html)
+    - [Part3](week3/t33.html)
+
 - 02561 Worksheet8
     - [Part1](work8/t81.html)
     - [Part2](work8/t82.html)

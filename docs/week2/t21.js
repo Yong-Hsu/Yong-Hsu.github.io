@@ -8,7 +8,8 @@ var maxNumTriangles = 500;
 var maxNumVertices = 3 * maxNumTriangles;
 var index = 0;
 
-window.onload = function init() {
+init();
+function init() {
 	canvas = document.getElementById('gl-canvas');
 	gl = WebGLUtils.setupWebGL(canvas); 
 
