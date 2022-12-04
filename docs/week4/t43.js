@@ -28,7 +28,8 @@ var alpha = 0;
 var eye = vec3(radius*Math.sin(alpha), 0.0, radius*Math.cos(alpha));
 var up, at, V, viewMatrixLoc;
 
-window.onload = function init() {
+init();
+function init() {
 	const coarsenButton = document.getElementById('increase');
 	const divideButton = document.getElementById('decrease');
 	const toggleOrbit = document.getElementById('orbit');

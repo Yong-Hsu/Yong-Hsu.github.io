@@ -11,7 +11,8 @@ const vd = vec4(0.816497, -0.471405, -0.333333, 1);
 
 var divisionLevel = 1;
 
-window.onload = function init() {
+init();
+function init() {
 	const canvas = document.getElementById('gl-canvas');
 	gl = WebGLUtils.setupWebGL(canvas);
     gl.enable(gl.DEPTH_TEST);

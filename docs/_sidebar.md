@@ -24,8 +24,21 @@
     - [Part2](week3/t32.html)
     - [Part3](week3/t33.html)
 
+- 02561 Worksheet4
+    - [Part1](week4/t41.html)
+    - [Part2](week4/t42.html)
+    - [Part3](week4/t43.html)
+    - [Part4](week4/t44.html)
+    - [Part5](week4/t45.html)
+
 - 02561 Worksheet8
     - [Part1](work8/t81.html)
     - [Part2](work8/t82.html)
     - [Part3](work8/t83.html)
     - [Part4](work8/t84.html)
+
+- 02561 Worksheet10
+    - [Part1](work10/t101.html)
+    - [Part2](work10/t102.html)
+    - [Part3](work10/t103.html)
+    - [Part4](work10/t104.html)

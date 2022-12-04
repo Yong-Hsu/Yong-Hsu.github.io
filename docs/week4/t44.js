@@ -44,7 +44,8 @@ function transform(angle, direction, s, t) {
 	return mult(mult(T, R), S);
 }
 
-window.onload = function init() {
+init();
+function init() {
 	const coarsenButton = document.getElementById('increase');
 	const divideButton = document.getElementById('decrease');
 	const toggleOrbit = document.getElementById('orbit');
