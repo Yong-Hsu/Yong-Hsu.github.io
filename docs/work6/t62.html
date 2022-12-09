@@ -1,0 +1,65 @@
+<html lang="en">
+<title>Worksheet 1 - Part 1</title>
+<script src="../angel_common/initShaders.js"></script>
+<script src="../angel_common/webgl-utils.js"></script>
+<script src="../angel_common/MV.js"></script>
+<script src="work6/t62.js"></script>
+
+<script id="vertex-shader" type="x-shader/x-vertex">
+	attribute vec4 vPosition;
+
+	uniform mat4 modelViewMatrix;
+	uniform mat4 projectionMatrix;
+
+	attribute vec2 vTexCoord;
+	varying vec2 fTexCoord;
+	varying vec4 fColor;
+	
+	void main()
+	{
+		gl_Position = projectionMatrix * modelViewMatrix * vPosition;
+		fTexCoord = vTexCoord;
+		fColor = vec4(1.0, 1.0, 1.0, 1.0);
+	}
+</script>
+
+<script id="fragment-shader" type="x-shader/x-fragment">
+	precision mediump float;
+
+	uniform sampler2D texMap;
+	varying vec2 fTexCoord;
+	varying vec4 fColor;
+
+	void main() {
+		// how does this work
+		gl_FragColor = texture2D(texMap, fTexCoord);
+	}
+</script>
+
+<body>
+	<canvas id='gl-canvas' height="512" width="512">
+		webgl is not available
+	</canvas>
+
+
+	texture wrapping modes
+	<select id="wrappingMode" size="2">
+		<option value="0"> repeat </option>
+		<option value="1"> clamp to edge </option>
+	</select>
+	<br>
+	texture filtering modes
+	<select id="filterMode" size="8">
+		<option value="0"> mag-nearest </option>
+		<option value="1"> mag-linear </option>
+		<option value="2"> min-nearest </option>
+
+		<option value="3"> min-linear </option>
+		<option value="4"> NEAREST_MIPMAP_NEAREST </option>
+		<option value="5"> LINEAR_MIPMAP_NEAREST </option>
+		<option value="6"> NEAREST_MIPMAP_LINEAR </option>
+		<option value="7"> LINEAR_MIPMAP_LINEAR </option>
+	</select>
+</body>
+
+</html>

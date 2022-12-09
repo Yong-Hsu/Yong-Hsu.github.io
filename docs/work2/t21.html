@@ -1,0 +1,34 @@
+<html>
+<title>Worksheet 2</title>
+<script src="../angel_common/initShaders.js"></script>
+<script src="../angel_common/webgl-utils.js"></script>
+<script src="../angel_common/MV.js"></script>
+<script src="work2/t21.js"></script>
+
+<script id="vertex-shader" type="x-shader/x-vertex">
+	attribute vec4 vPosition;
+
+	void main()
+	{
+		gl_PointSize = 7.0;
+		gl_Position = vPosition;
+	}
+</script>
+
+<script id="fragment-shader" type="x-shader/x-fragment">
+	precision mediump float;
+	void main()
+	{
+		gl_FragColor = vec4(1.0, 0.0, 0.0, 1.0);
+	}
+</script>
+
+<body>
+	<h1>Worksheet 2 -- part 1</h1>
+	<!-- <div>
+		In this first part we mainly ensure our JS script is running <br />and we are able to create a blank context.
+	</div> -->
+	<canvas id='gl-canvas' height="512" width="512"></canvas>
+</body>
+
+</html>
