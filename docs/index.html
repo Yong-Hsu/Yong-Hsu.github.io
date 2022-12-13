@@ -13,12 +13,14 @@
 </head>
 
 <body>
+  <!-- style="background-color:rgba(226, 235, 235, 0.471);" -->
   <div id="app"></div>
   <script>
     window.$docsify = {
       name: '',
       repo: '',
       loadSidebar: true,
+      autoHeader: true,
       executeScript: true,
       subMaxLevel: 2,
       logo: 'res/mount.png',
@@ -28,10 +30,18 @@
       }
     };
   </script>
+
   <!-- Docsify v4 -->
   <script src="//cdn.jsdelivr.net/npm/docsify@4"></script>
   <script src="//cdn.jsdelivr.net/npm/docsify/lib/plugins/external-script.min.js"></script>
+
   <script src="//cdn.jsdelivr.net/npm/docsify-sidebar-collapse/dist/docsify-sidebar-collapse.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-c.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-cpp.js"></script>
+
+  <script src="https://cdn.jsdelivr.net/npm/docsify@4/lib/plugins/zoom-image.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/docsify@4/lib/plugins/search.js"></script>
+
   <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/docsify-sidebar-collapse/dist/sidebar.min.css"/>
 </body>
 </html>

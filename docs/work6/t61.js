@@ -1,5 +1,8 @@
 console.trace("Started");
 
+cancelAnimationFrame(id);
+var id = null;
+
 /** @type {WebGLRenderingContext} */
 var gl;
 

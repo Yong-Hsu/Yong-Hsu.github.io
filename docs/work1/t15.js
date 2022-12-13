@@ -6,6 +6,9 @@ var vertices;
 var theta;
 var thetaLoc;
 
+cancelAnimationFrame(id);
+var id = null;
+
 init();
 
 function init() {
@@ -65,14 +68,11 @@ function init() {
 
 function render()
 {	
-	setTimeout(() => {
-		// give color to the frame
-		gl.clear(gl.COLOR_BUFFER_BIT);
-		// display the vertices after those data has been on the GPU
-		theta += 0.1;
-		gl.uniform1f(thetaLoc, theta);
-		gl.drawArrays(gl.TRIANGLE_FAN, 0, vertices.length);
+	gl.clear(gl.COLOR_BUFFER_BIT);
+	// display the vertices after those data has been on the GPU
+	theta += 0.1;
+	gl.uniform1f(thetaLoc, theta);
+	gl.drawArrays(gl.TRIANGLE_FAN, 0, vertices.length);
 
-		requestAnimationFrame(render);
-	}, 20);
+	id = requestAnimationFrame(render);
 }

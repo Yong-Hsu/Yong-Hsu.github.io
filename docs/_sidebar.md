@@ -1,17 +1,14 @@
 <!-- docs/_sidebar.md -->
 <!-- docsify serve docs -->
 
-* [ReadMe](/) 
-* [02561 Lab Journals](rendering/rendering.md)
-<!-- * [Test](t15.html) -->
-<!-- * [Test2](test.md) -->
-<!-- * [Test3](t23.html) -->
-<!-- * [Worksheet 1](t15.html "t1115") -->
+* [**ReadMe**](/) 
+* [**02562** Lab Journals](rendering/rendering.md)
+
 - 02561 Worksheet1
     - [Part1&2](work1/t11.html)
     - [Part3](work1/t13.html)
-    - [Part4](work1/t14.html)
-    - [Part5](work1/t15.html)
+    - [Part4](work1/t14.md)
+    - [Part5](work1/t15.md)
 
 - 02561 Worksheet2
     - [Part1](work2/t21.html)
@@ -35,9 +32,9 @@
     - [Part1](work5/t51.html) 
 
 - 02561 Worksheet6
-    - [Part1](work6/t61.html) 
-    - [Part2](work6/t62.html)
-    - [Part3](work6/t63.html)
+    - [Part1](work6/t61.md) 
+    - [Part2](work6/t62.md)
+    - [Part3](work6/t63.md)
 
 - 02561 Worksheet7
     - [Part1](work7/t71.html) 
@@ -62,4 +59,18 @@
     - [Part3](work10/t103.html)
     - [Part4](work10/t104.html)
 
-* [02561 Project Matcap](matcap/matcap.html)
+* [**02561** Project Matcap](matcap/matcap.html)
+
+
+
+<!-- <img src="rendering/res/test.png" 
+    alt="Picture" 
+    style="display: block; margin: 0 auto" /> -->
+
+<!-- <img align="left" src="rendering/res/test.png">
+<img align="right" src="rendering/res/test.png"> -->
+
+<!-- <figure>
+  <img align="center" src="rendering/res/test.png" alt="Trulli" >
+  <figcaption>Fig.1 - Trulli, Puglia, Italy.</figcaption>
+</figure> -->

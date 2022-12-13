@@ -1,54 +1,64 @@
 <html lang="en">
-<title>Worksheet 1 - Part 1</title>
 <script src="../angel_common/initShaders.js"></script>
 <script src="../angel_common/webgl-utils.js"></script>
 <script src="../angel_common/MV.js"></script>
+<script type="text/javascript" src="../angel_common/OBJParser.js"> </script>
 <script src="matcap/matcap.js"></script>
+<script src="matcap/quaternion.js"></script>
 
 <script id="vertex-shader" type="x-shader/x-vertex">
-	attribute vec4 vPosition;
-	attribute vec4 vNormal;
+	precision highp float;
+	attribute vec3 a_Position;
+	attribute vec3 a_Normal;
+	attribute vec4 a_Color;
+
+	varying vec4 fColor;
+	varying vec4 vPos;
+	varying vec3 vNorm;
 
 	uniform mat4 modelMatrix;
 	uniform mat4 viewMatrix;
 	uniform mat4 projectionMatrix;
-	
-	uniform mat4 normalsArray;
-	uniform vec4 lightPos;
-	uniform vec3 emission_le; // intensity
-	uniform vec3 diffuse_kd;
 
-    varying vec4 fColor;
-	
 	void main()
 	{
-		gl_Position = modelMatrix * vPosition;
+		vPos = vec4(a_Position, 1.0);
+		vNorm = normalize(vec3(modelMatrix * vec4(a_Normal, 0.0))); 
+		fColor = a_Color;
 
-		vec3 w_i = lightPos.w == 0.0 ? normalize(-lightPos.xyz) : normalize(lightPos.xyz - gl_Position.xyz);
-		vec3 color = 0.5 * vPosition.xyz + 0.5;
-
-		gl_Position = projectionMatrix * viewMatrix * gl_Position;
-		
-		fColor = vec4(color * emission_le / pow(length(w_i), 2.0) * max(dot(vNormal.xyz, w_i), 0.0), 1.0);
+		gl_Position = projectionMatrix * viewMatrix * modelMatrix * vPos;
 	}
 </script>
 
 <script id="fragment-shader" type="x-shader/x-fragment">
-	precision mediump float;
-    varying vec4 fColor;
+	precision highp float;
+
+	varying vec4 fColor;
+	varying vec4 vPos;
+	varying vec3 vNorm;
+
+	uniform mat4 modelMatrix;
+	uniform mat4 viewMatrix;
+	uniform mat4 projectionMatrix;
+
+	uniform sampler2D matcapTexture; 
 
 	void main()
 	{
-		gl_FragColor = fColor;
+		// Move normal to view space
+		highp vec2 muv = vec2(viewMatrix * vec4(normalize(vNorm), 0)) * 0.5 + vec2(0.5, 0.5);
+		// read texture inverting Y value
+		gl_FragColor = texture2D(matcapTexture, vec2(muv.x, 1.0 - muv.y));
 	}
 </script>
 
-<body>
+<!-- how to use the texture -->
+<!-- understand how every step exactly happens -->
+
+<body oncontextmenu="return false;">
 	<canvas id='gl-canvas' height="512" width="512">
         "WebGL isn't available"
     </canvas>
-	<br>
-	<button type="button" id="orbit"> Toggle orbiting ⏯ </button>
 </body>
 
 </html>

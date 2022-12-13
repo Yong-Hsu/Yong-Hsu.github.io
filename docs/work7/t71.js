@@ -1,4 +1,5 @@
 console.trace("Started");
+glBindTexture(GL_TEXTURE_2D, 0);
 
 /** @type {WebGLRenderingContext} */
 var gl;

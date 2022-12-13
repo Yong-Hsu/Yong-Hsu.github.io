@@ -122,7 +122,7 @@ function initEventHandlers(canvas, q_rot, q_inc, pan_and_eye) {
 	};
 
 	// canvas.oncontextmenu = function (ev) { ev.preventDefault(); };
-
+	//todo: outside the webgl windows
 	// Mouse is released
 	canvas.onmouseup = function (ev) {
 		if (ev.clientX == initX && ev.clientY == initY) 

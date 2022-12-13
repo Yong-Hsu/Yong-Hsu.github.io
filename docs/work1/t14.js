@@ -1,9 +1,12 @@
 console.trace("Started");
 
 var gl;
-var theta;
-var thetaLoc;
+var step;
+var stepLoc;
 var vertices;
+
+cancelAnimationFrame(id);
+var id = null;
 
 init();
 
@@ -12,14 +15,7 @@ function init() {
 	const canvas = document.getElementById('gl-canvas');
 	/** @type {WebGLRenderingContext} */
 	gl = WebGLUtils.setupWebGL(canvas); //found in
-	
-	// 1
-	// gl.viewport(0.0, 0.0, canvas.width, canvas.height)
-	// gl.clearColor(0.3921, 0.5843, 0.9294, 1.0);
-	// gl.clear(gl.COLOR_BUFFER_BIT);
-	// console.trace("Ended");
 
-	// 2
 	if (!gl) {
 		alert("WebGL isn't available");
 	}
@@ -30,12 +26,6 @@ function init() {
 		vec2(-1.0, 0.0),
 		vec2(0.0, -1.0)
 	];
-
-	// var vertices2 = [
-	// 	vec2(0.0, -1.0),
-	// 	vec2(0.0, 0.0),
-	// 	vec2(1.0, 0.0)
-	// ];
 
 	// a rectangular area of the display window
 	gl.viewport(0.0, 0.0, canvas.width, canvas.height);
@@ -59,23 +49,20 @@ function init() {
 	// We have to enable the vertex attributes that are in the shaders   
 	gl.enableVertexAttribArray(vPosition);
 
-	theta = 0.0;
-	thetaLoc = gl.getUniformLocation(program, "theta");
+	step = 0.0;
+	stepLoc = gl.getUniformLocation(program, "step");
 	
 	render();
 }
 
 function render()
 {	
-	setTimeout(() => {
-		// give color to the frame
-		gl.clear(gl.COLOR_BUFFER_BIT);
-		theta += 0.05;
-		gl.uniform1f(thetaLoc, theta);
-		// display the vertices after those data has been on the GPU
-		gl.drawArrays(gl.TRIANGLE_STRIP, 0, vertices.length);
-		// or TRIANGLES with 6 points in vertices
+	gl.clear(gl.COLOR_BUFFER_BIT);
+	step += 0.05;
+	gl.uniform1f(stepLoc, step);
+	// display the vertices after those data has been on the GPU
+	gl.drawArrays(gl.TRIANGLE_STRIP, 0, vertices.length);
+	// or TRIANGLES with 6 points in vertices
 
-		requestAnimationFrame(render);
-	}, 12);
+	id = requestAnimationFrame(render);
 }
