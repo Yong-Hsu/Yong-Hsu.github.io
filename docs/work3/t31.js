@@ -1,5 +1,3 @@
-console.trace("Started");
-
 /** @type {WebGLRenderingContext} */
 var gl;
 var vertices;
@@ -18,7 +16,7 @@ var vertexColors = [
 init();
 function init() {
 	const canvas = document.getElementById('gl-canvas');
-	gl = WebGLUtils.setupWebGL(canvas); //found in
+	gl = WebGLUtils.setupWebGL(canvas); 
 	
 	if (!gl) {
 		alert("WebGL isn't available");
@@ -30,7 +28,6 @@ function init() {
 	program = initShaders(gl, "vertex-shader", "fragment-shader");
 	gl.useProgram(program);
 
-	// todo: how does the program tell from 2d to 3d
 	vertices = [
 		vec4(-0.5, -0.5, 0.5, 1.0),
 		vec4(-0.5, 0.5, 0.5, 1.0),
@@ -57,7 +54,7 @@ function init() {
 		6, 7
 	];
 
-	// mdel matrix: scale and translate to move diagonal to 000 111
+	// model matrix: scale and translate to move diagonal to 000 111
 	var angle = 0;
 	var direction = [1, -1, 4];
 	var s_x = 1; var s_y = 1; var s_z = 1;
@@ -83,8 +80,8 @@ function init() {
 	var ProjectMat = mat4();
 
 	// pass modelViewMatrix,
-	var P = ortho(-2.0, 2.0, -2.0, 2.0, -2.0, 2.0)
-	var modelViewMatrix = mult(P, mult(V, M));
+	// var P = ortho(-2.0, 2.0, -2.0, 2.0, -2.0, 2.0)
+	var modelViewMatrix = mult(ProjectMat, mult(V, M));
 	var modelViewMatrixLoc = gl.getUniformLocation(program, "modelViewMatrix");
 	gl.uniformMatrix4fv(modelViewMatrixLoc, false, flatten(modelViewMatrix));
 	
@@ -112,8 +109,7 @@ function init() {
 	render();
 }
 
-function render()
-{	
+function render() {	
 	gl.clear(gl.COLOR_BUFFER_BIT);
 	// gl.drawElements(gl.TRIANGLES, indices.length, gl.UNSIGNED_BYTE, 0);
 	gl.drawElements(gl.LINES, indices.length, gl.UNSIGNED_BYTE, 0);

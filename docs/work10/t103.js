@@ -70,9 +70,6 @@ function init() {
 	// render
 	var render = function () {
 		gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
-		
-		// not changing anything
-		// todo: remove right click menu
 
 		var c = subtract(
 			at, 
@@ -139,6 +136,7 @@ function initEventHandlers(canvas, q_rot, q_inc, pan_and_eye) {
 				case 1: { // orbit
 					q_inc = q_inc.make_rot_vec2vec(normalize(u), normalize(v));
 					q_rot = q_rot.multiply(q_inc);
+					// seperate the calculation here and outside
 				}
 				break;
 				case 2: { // dolly

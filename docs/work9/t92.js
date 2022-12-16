@@ -145,7 +145,6 @@ function init() {
 }
 
 
-
 /*
 * Render functions
 */
@@ -176,34 +175,6 @@ function render(model, program, programQuad) {
 
 	gl.uniform1f(gl.getUniformLocation(programQuad, "type"), 1.0);
 	render_quad(programQuad);
-	// render_obj(program, model);
-
-	// scale to 01? 
-	// before calculating visibility 
-
-	// if (isJump || isOrbit) {
-	// 	setTimeout(() => {
-	// 		if (isJump) {
-	// 			beta = beta + 0.03;
-	// 			M = translate(0.0, -0.5 + 0.6 * Math.sin(beta), -3.0);
-	// 			gl.uniformMatrix4fv(gl.getUniformLocation(program, "modelMatrix"), false, flatten(M));
-
-	// 		}
-	// 		if (isOrbit) {
-	// 			theta = theta + 0.2;
-	// 			lightPos = getLightPos(theta);
-	// 			gl.uniform4fv(gl.getUniformLocation(program, "lightPos"), flatten(lightPos));
-	// 		}
-
-	// 		window.requestAnimationFrame(function () {
-	// 			render(model, program, programQuad);
-	// 		});
-
-	// 	}, 100);
-	// }
-
-	// [.WebGL-000049D803E0D500] GL_INVALID_OPERATION: Feedback loop formed between Framebuffer and active Texture.
-	// You are trying to render to a texture using a shader relying on the same texture which creates trouble.
 }
 
 function render_quad(programQuad) {
@@ -224,7 +195,7 @@ function render_obj(program, model) {
 	
 	if (!g_drawingInfo && g_objDoc && g_objDoc.isMTLComplete()) {
 		// OBJ and all MTLs are available
-		console.log('onReadComplete');
+		// console.log('onReadComplete');
 		g_drawingInfo = onReadComplete(gl, model, g_objDoc);
 	}
 	if (!g_drawingInfo) {

@@ -1,5 +1,3 @@
-console.trace("Started");
-
 /** @type {WebGLRenderingContext} */
 var gl;
 var vertices = [
@@ -29,8 +27,6 @@ var indices = [
 var vertexColors = Array(8).fill([1.0, 0.0, .0, 1.0])
 				.concat(Array(8).fill([0.0, 1.0, 0.0, 1.0]), 
 						Array(8).fill([0.0, 0.0, 1.0, 1.0]));
-// one two three point
-
 indices = indices.concat(indices.map(element => element + 8), 
 						indices.map(element => element + 16));
 
@@ -65,7 +61,6 @@ function init() {
 	}
 
 	// view matrix
-	// hack: the reference system from model to here changes a lot
 	var eye = vec3(3, 0.5, 0.5);
 	var at  = vec3(0.5, 0.5, 0.5);
 	var up  = vec3(0.0, 0.0, 1.0);

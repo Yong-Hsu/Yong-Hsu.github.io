@@ -1,4 +1,4 @@
-console.trace("Started");
+
 
 var gl;
 var step;
@@ -58,7 +58,7 @@ function init() {
 function render()
 {	
 	gl.clear(gl.COLOR_BUFFER_BIT);
-	step += 0.05;
+	step += 0.03;
 	gl.uniform1f(stepLoc, step);
 	// display the vertices after those data has been on the GPU
 	gl.drawArrays(gl.TRIANGLE_STRIP, 0, vertices.length);

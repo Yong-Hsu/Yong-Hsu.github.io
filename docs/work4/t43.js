@@ -1,5 +1,3 @@
-console.trace("Started");
-
 /** @type {WebGLRenderingContext} */
 var gl;
 var program;
@@ -14,7 +12,7 @@ var vd = vec4(0.816497, -0.471405, -0.333333, 1);
 var normalsArray = [];
 
 // subdivision level of the sphere
-var divisionLevel = 1;
+var divisionLevel = 4;
 
 // light information
 var lightPos = vec4(-1.0, 0.0, -1.0, 0,0);
@@ -28,6 +26,8 @@ var alpha = 0;
 var eye = vec3(radius*Math.sin(alpha), 0.0, radius*Math.cos(alpha));
 var up, at, V, viewMatrixLoc;
 
+var id = null;
+
 init();
 function init() {
 	const coarsenButton = document.getElementById('increase');
@@ -38,7 +38,6 @@ function init() {
 	gl = WebGLUtils.setupWebGL(canvas);
     gl.enable(gl.DEPTH_TEST);
     // gl.enable(gl.CULL_FACE);
-	// todo: does it depend on where I view the object
 
 	// setup
 	gl.viewport(0.0, 0.0, canvas.width, canvas.height);
@@ -84,7 +83,10 @@ function init() {
 			pointsArray = [];
 			normalsArray = [];
 			initSphere(divisionLevel);
-			requestAnimationFrame(render);
+
+			cancelAnimationFrame(id);
+			id = null;
+			render();
 		}
 	});
 	divideButton.addEventListener("click", function() {
@@ -93,7 +95,10 @@ function init() {
 			pointsArray = [];
 			normalsArray = [];
 			initSphere(divisionLevel);
-			requestAnimationFrame(render);
+
+			cancelAnimationFrame(id);
+			id = null;
+			render();
 		}
 	});
 
@@ -107,17 +112,15 @@ function init() {
 
 function render() {
 	if (isOrbit) {
-		setTimeout(() => {
-			gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
+		gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
 
-			alpha += 0.1;
-			V = lookAt(eye, at, up);
-			eye = vec3(radius*Math.sin(alpha), 0.0, radius*Math.cos(alpha));
+		alpha += 0.06;
+		V = lookAt(eye, at, up);
+		eye = vec3(radius*Math.sin(alpha), 0.0, radius*Math.cos(alpha));
 
-			gl.uniformMatrix4fv(viewMatrixLoc, false, flatten(V));
-			gl.drawArrays(gl.TRIANGLES, 0, pointsArray.length)
-			requestAnimationFrame(render);
-		}, 20);
+		gl.uniformMatrix4fv(viewMatrixLoc, false, flatten(V));
+		gl.drawArrays(gl.TRIANGLES, 0, pointsArray.length)
+		id = requestAnimationFrame(render);
 	} else {
 		gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
 		gl.drawArrays(gl.TRIANGLES, 0, pointsArray.length);
@@ -144,7 +147,6 @@ function initSphere(numSubdivs) {
 	var vNormal = gl.getAttribLocation(program, 'vNormal');
 	gl.vertexAttribPointer(vNormal, 4, gl.FLOAT, false, 0, 0);
 	gl.enableVertexAttribArray(vNormal);
-	// https://stackoverflow.com/questions/3665671/is-vertexattribpointer-needed-after-each-bindbuffer
 }
 
 function tetrahedron(v1, v2, v3, v4, numSubdivs) {

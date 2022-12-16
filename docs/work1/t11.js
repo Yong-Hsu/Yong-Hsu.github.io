@@ -1,4 +1,4 @@
-console.trace("Started");
+
 
 init();
 
@@ -6,12 +6,6 @@ function init() {
 	const canvas = document.getElementById('gl-canvas');
 	/** @type {WebGLRenderingContext} */
 	let gl = WebGLUtils.setupWebGL(canvas); //found in
-	
-	// 1
-	// gl.viewport(0.0, 0.0, canvas.width, canvas.height)
-	// gl.clearColor(0.3921, 0.5843, 0.9294, 1.0);
-	// gl.clear(gl.COLOR_BUFFER_BIT);
-	// console.trace("Ended");
 
 	// 2
 	if (!gl) {
@@ -26,8 +20,7 @@ function init() {
 	]
 
 	gl.viewport(0.0, 0.0, canvas.width, canvas.height);
-	gl.clearColor(1.0, 1.0, 1.0, 1.0);
-	// gl.clearColor(0.3921, 0.5843, 0.9294, 1.0);
+	gl.clearColor(0.3921, 0.5843, 0.9294, 1.0);
 
 	// load shaders and initialize atribute buffers
 	program = initShaders(gl, "vertex-shader", "fragment-shader");

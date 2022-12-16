@@ -1,5 +1,3 @@
-console.trace("Started");
-
 /** @type {WebGLRenderingContext} */
 var gl;
 
@@ -109,7 +107,6 @@ function init() {
 	gl.activeTexture(gl.TEXTURE1);
 	var texture1 = gl.createTexture();
 	gl.bindTexture(gl.TEXTURE_2D, texture1);
-	// gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGB, gl.RGB, gl.UNSIGNED_BYTE, new Uint8Array([255, 0, 0]));
 	gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGB, 1, 1, 0, gl.RGB, gl.UNSIGNED_BYTE, new Uint8Array([255, 0, 0]));
 	gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.NEAREST);
 	gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.NEAREST);

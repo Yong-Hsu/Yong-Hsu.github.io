@@ -78,7 +78,7 @@ function init() {
 			add(scale(pan_and_eye[0], q_rot.apply(vec3(1.0, 0.0, 0.0))), 
 				scale(pan_and_eye[1], q_rot.apply(up)))
 		);
-		// console.log(c);
+
 		var V2 = lookAt(
 			add(q_rot.apply(vec3(0, 0, pan_and_eye[2])), c), 
 			c, 
@@ -93,7 +93,7 @@ function init() {
 	setTimeout(() => {
 		g_drawingInfo = checkModel(model);
 		render();
-	}, 150);
+	}, 300);
 };
 
 // function for handling mouse movements
@@ -121,8 +121,7 @@ function initEventHandlers(canvas, q_rot, q_inc, pan_and_eye) {
 		}
 	};
 
-	// canvas.oncontextmenu = function (ev) { ev.preventDefault(); };
-	//todo: outside the webgl windows
+	// todo: outside the webgl windows
 	// Mouse is released
 	canvas.onmouseup = function (ev) {
 		if (ev.clientX == initX && ev.clientY == initY) 
@@ -144,7 +143,7 @@ function initEventHandlers(canvas, q_rot, q_inc, pan_and_eye) {
 			switch (action) {
 				case 1: { // orbit
 					q_inc = q_inc.make_rot_vec2vec(normalize(u), normalize(v));
-					
+					q_rot = q_rot.multiply(q_inc);
 				}
 				break;
 				case 2: { // dolly
@@ -170,7 +169,7 @@ function initEventHandlers(canvas, q_rot, q_inc, pan_and_eye) {
 function checkModel(model) {
 	if (!g_drawingInfo && g_objDoc && g_objDoc.isMTLComplete()) {
 		// OBJ and all MTLs are available
-		console.log('onReadComplete');
+		// console.log('onReadComplete');
 		g_drawingInfo = onReadComplete(gl, model, g_objDoc);
 		return g_drawingInfo;
 	}

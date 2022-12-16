@@ -1,7 +1,3 @@
-// python -m http.server  
-// edge has a problem with loading the extension
-console.trace("Started");
-
 /** @type {WebGLRenderingContext} */
 var gl;
 var program;
@@ -68,13 +64,10 @@ function init() {
 	gl.uniform1f(shininessLoc, shininess);	
 
 	// object loading
-	// var model = initObject(gl, "../res/engraving.obj", 60);
 	var model = initObject(gl, "../res/mask.obj", 60);
-
-	// follow the slide for the tick function!
 	setTimeout(() => {
 		render(0, model);
-	}, 1500);
+	}, 400);
 };
 
 function initObject(gl, obj_filename, scale) {
@@ -167,10 +160,9 @@ function onReadComplete(gl, model, objDoc) {
 function render(view, model) {
 	gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
 
-	console.log(g_objDoc);
 	if (!g_drawingInfo && g_objDoc && g_objDoc.isMTLComplete()) {
 		// OBJ and all MTLs are available
-		console.log('onReadComplete');
+		// console.log('onReadComplete');
 		g_drawingInfo = onReadComplete(gl, model, g_objDoc);
 	}
 	if (!g_drawingInfo) {

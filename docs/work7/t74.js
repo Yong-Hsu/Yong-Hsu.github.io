@@ -1,5 +1,3 @@
-console.trace("Started");
-// todo: orbit
 /** @type {WebGLRenderingContext} */
 var gl;
 var program;
@@ -108,7 +106,7 @@ function init() {
 
 	setTimeout(() => {
 		if (g_tex_ready >= 6)	render();
-	}, 500);
+	}, 300);
 }
 
 function render() {
@@ -122,8 +120,6 @@ function render() {
 	reflective = 2.0;
 	gl.uniform1f(reflectiveLoc, reflective);
 	gl.drawArrays(gl.TRIANGLES, 6, pointsArray.length - 6);
-
-	// todo: where are thosse tiny artifcats coming from
 }
 
 function initSphere(numSubdivs) {
@@ -185,7 +181,6 @@ function push_triangle(v1, v2, v3) {
 	var vc = vec4(v3[0]*0.5, v3[1]*0.5, v3[2]*0.5, 1.0);
 	pointsArray.push(va, vb, vc);
 	normalsArray.push(va, vb, vc);
-	// normalsArray.push(normalize(va, true), normalize(vb, true), normalize(vc, true));
 }
 
 function transform(angle, direction, s, t) {

@@ -1,5 +1,3 @@
-console.trace("Started");
-
 /** @type {WebGLRenderingContext} */
 var gl;
 
@@ -36,14 +34,12 @@ var radius = 2.0;
 var theta = 0.0;
 var light = vec3(radius * Math.cos(theta), 2.0, radius * Math.sin(theta) - 2.0);
 var Mat_s; var shadowModelLoc; var Mat_p;
-var isOrbit = false;
-
+var isOrbit = true;
 
 init();
 function init() {
 	const canvas = document.getElementById('gl-canvas');
 	gl = WebGLUtils.setupWebGL(canvas, {alpha: false});
-	//todo: https://learnopengl.com/Advanced-OpenGL/Depth-testing
 	gl.enable(gl.DEPTH_TEST);
 	gl.enable(gl.BLEND);
 	
@@ -70,12 +66,11 @@ function init() {
 		vec4(0.0, 1.0, 0.0, 0.0),
 		vec4(0.0, 0.0, 1.0, 0.0),
 		vec4(0.0, -1.0 / (light[1] - (-1.0 - 0.01)), 0.0, 0.0)
-		// todo: yg minus epsilon here
+		// yg minus epsilon here
 	);
 	Mat_s = mult(mult(translate(light[0], light[1], light[2]), Mat_p), translate(-light[0], -light[1], -light[2])); // *mat4()
 	shadowModelLoc = gl.getUniformLocation(program, "shadowModelMatrix")
 	gl.uniformMatrix4fv(shadowModelLoc, false, flatten(Mat_s));
-	// gl.uniformMatrix4fv(gl.getUniformLocation(program, "shadowModelMatrix"), false, flatten(Mat_s));
 
 	// vertices buffer
 	var buffer = gl.createBuffer();
@@ -136,7 +131,6 @@ function init() {
 	gl.activeTexture(gl.TEXTURE1);
 	var texture1 = gl.createTexture();
 	gl.bindTexture(gl.TEXTURE_2D, texture1);
-	// gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGB, gl.RGB, gl.UNSIGNED_BYTE, new Uint8Array([255, 0, 0]));
 	gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGB, 1, 1, 0, gl.RGB, gl.UNSIGNED_BYTE, new Uint8Array([255, 0, 0]));
 	gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.NEAREST);
 	gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.NEAREST);
@@ -154,36 +148,33 @@ function init() {
 }
 
 function render() {
-	setTimeout(() => {
-		gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
-		
-		// draw arrays, order is important
-		var typeLoc = gl.getUniformLocation(program, "type"); //visibility
-		type = 2.0;
-		gl.uniform1f(typeLoc, type);
-		gl.drawArrays(gl.TRIANGLES, 0, 6);
-		
-		gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
-		gl.depthFunc(gl.GREATER);
-		type = 0.0;
-		gl.uniform1f(typeLoc, type);
-		gl.drawArrays(gl.TRIANGLES, 6, 12);
+	gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
+	
+	// draw arrays, order is important
+	var typeLoc = gl.getUniformLocation(program, "type"); //visibility
+	type = 2.0;
+	gl.uniform1f(typeLoc, type);
+	gl.drawArrays(gl.TRIANGLES, 0, 6);
+	
+	gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
+	gl.depthFunc(gl.GREATER);
+	type = 0.0;
+	gl.uniform1f(typeLoc, type);
+	gl.drawArrays(gl.TRIANGLES, 6, 12);
 
-		gl.depthFunc(gl.LESS);
-		type = 1.0;
-		gl.uniform1f(typeLoc, type);
-		gl.drawArrays(gl.TRIANGLES, 6, 12);
+	gl.depthFunc(gl.LESS);
+	type = 1.0;
+	gl.uniform1f(typeLoc, type);
+	gl.drawArrays(gl.TRIANGLES, 6, 12);
 
-		if(isOrbit) {
-			// move light, change shadow projection matrix
-			theta = theta + 0.01;
-			light = vec3(radius * Math.cos(theta), 2.0, radius * Math.sin(theta) - 2.0);
+	if(isOrbit) {
+		theta = theta + 0.01;
+		light = vec3(radius * Math.cos(theta), 2.0, radius * Math.sin(theta) - 2.0);
 
-			Mat_s = mult(mult(translate(light[0], light[1], light[2]), Mat_p), translate(-light[0], -light[1], -light[2])); // *mat4()
-			gl.uniformMatrix4fv(shadowModelLoc, false, flatten(Mat_s));
-			requestAnimationFrame(render);
-		}		
-	}, 20);
+		Mat_s = mult(mult(translate(light[0], light[1], light[2]), Mat_p), translate(-light[0], -light[1], -light[2])); // *mat4()
+		gl.uniformMatrix4fv(shadowModelLoc, false, flatten(Mat_s));
+		requestAnimationFrame(render);
+	}		
 }
 
 function transform(angle, direction, s, t) {

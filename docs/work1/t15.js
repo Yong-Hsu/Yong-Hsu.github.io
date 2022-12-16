@@ -1,4 +1,4 @@
-console.trace("Started");
+
 
 /** @type {WebGLRenderingContext} */
 var gl;
@@ -12,15 +12,8 @@ var id = null;
 init();
 
 function init() {
-	// initialize_the_system
 	const canvas = document.getElementById('gl-canvas');
 	gl = WebGLUtils.setupWebGL(canvas); //found in
-	
-	// 1
-	// gl.viewport(0.0, 0.0, canvas.width, canvas.height)
-	// gl.clearColor(0.3921, 0.5843, 0.9294, 1.0);
-	// gl.clear(gl.COLOR_BUFFER_BIT);
-	// console.trace("Ended");
 
 	// 2
 	if (!gl) {
@@ -70,7 +63,7 @@ function render()
 {	
 	gl.clear(gl.COLOR_BUFFER_BIT);
 	// display the vertices after those data has been on the GPU
-	theta += 0.1;
+	theta += 0.07;
 	gl.uniform1f(thetaLoc, theta);
 	gl.drawArrays(gl.TRIANGLE_FAN, 0, vertices.length);
 

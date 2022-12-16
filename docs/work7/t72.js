@@ -1,5 +1,3 @@
-console.trace("Started");
-
 /** @type {WebGLRenderingContext} */
 var gl;
 var program;
@@ -46,7 +44,8 @@ function init() {
 	P = mat4();
 	// texture matrix
 	var Mtex = mat4();
-	//todo: why setting the params to mat4 fixed my problem
+
+	// The texture coordinate used to access a cubemap is a 3D direction vector which represents a direction from the center of the cube to the value to be accessed.
 
 	// pass matrices 
 	var modelMatrixLoc = gl.getUniformLocation(program, "modelMatrix");

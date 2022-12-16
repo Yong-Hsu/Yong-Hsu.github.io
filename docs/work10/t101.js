@@ -71,9 +71,7 @@ function init() {
 		gl.uniformMatrix4fv(viewMatrixLoc, false, flatten(V2));
 
 		gl.drawElements(gl.TRIANGLES, g_drawingInfo.indices.length, gl.UNSIGNED_INT, 0);
-		setTimeout(() => {
-			requestAnimationFrame(render);
-		}, 20);
+		requestAnimationFrame(render);
 	}
 
 	setTimeout(() => {
@@ -118,7 +116,7 @@ function initEventHandlers(canvas, currentAngle) {
 function checkModel(model) {
 	if (!g_drawingInfo && g_objDoc && g_objDoc.isMTLComplete()) {
 		// OBJ and all MTLs are available
-		console.log('onReadComplete');
+		// console.log('onReadComplete');
 		g_drawingInfo = onReadComplete(gl, model, g_objDoc);
 		return g_drawingInfo;
 	}

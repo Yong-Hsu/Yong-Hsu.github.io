@@ -1,4 +1,4 @@
-console.trace("Started");
+
 
 /** @type {WebGLRenderingContext} */
 var gl;
@@ -90,7 +90,6 @@ function init() {
 	
 	wrappingMenu.addEventListener('click', function () {
 		if (wrappingMenu.selectedIndex == 0) {
-			console.log('1');
 			gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.REPEAT);
 			gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.REPEAT);
 			requestAnimationFrame(render);

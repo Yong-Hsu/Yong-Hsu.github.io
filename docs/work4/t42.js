@@ -1,5 +1,3 @@
-console.trace("Started");
-
 /** @type {WebGLRenderingContext} */
 var gl;
 
@@ -9,7 +7,7 @@ var vb = vec4(0.0, 0.942809, -0.333333, 1);
 var vc = vec4(-0.816497, -0.471405, -0.333333, 1);
 var vd = vec4(0.816497, -0.471405, -0.333333, 1);
 
-var divisionLevel = 1;
+var divisionLevel = 4;
 
 init();
 function init() {
@@ -18,7 +16,6 @@ function init() {
     gl.enable(gl.DEPTH_TEST);
     gl.enable(gl.CULL_FACE);
 	// gl.frontFace(gl.CW);
-
 
 	// setup
 	gl.viewport(0.0, 0.0, canvas.width, canvas.height);
@@ -32,6 +29,7 @@ function init() {
 	// m0del matrix
 	M  = transform(0, [1, 1, 1], [1, 1, 1], [0.0, 0.0, 0.0]);
 	// view matrix
+	// var eye = vec3(-3.0, 0.0, -3.0);
 	var eye = vec3(0.0, 0.0, 3.0);
 	var at  = vec3(0, 0, 0);
 	var up  = vec3(0.0, 1.0, 0.0);
@@ -118,16 +116,16 @@ function divideTriangle(v1, v2, v3, numSubdivs) {
 	var v23 = normalize(scale(0.5, add(v2, v3)), true);
 	var v31 = normalize(scale(0.5, add(v3, v1)), true);
 
-	pointsArray.push(v1, v12, v31);
-	pointsArray.push(v12, v23, v31);
-	pointsArray.push(v12, v2, v23);
-	pointsArray.push(v31, v23, v3);
-	
 	if (numSubdivs - 1 != 0) {
 		divideTriangle(v1, v12, v31, numSubdivs - 1);
 		divideTriangle(v12, v23, v31, numSubdivs - 1);
 		divideTriangle(v12, v2, v23, numSubdivs - 1);
 		divideTriangle(v31, v23, v3, numSubdivs - 1);
+	} else {
+		pointsArray.push(v1, v12, v31);
+		pointsArray.push(v12, v23, v31);
+		pointsArray.push(v12, v2, v23);
+		pointsArray.push(v31, v23, v3);
 	}
 }
 

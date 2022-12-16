@@ -1,4 +1,4 @@
-console.trace("Started");
+
 
 init();
 
@@ -7,14 +7,7 @@ function init() {
 	const canvas = document.getElementById('gl-canvas');
 	/** @type {WebGLRenderingContext} */
 	let gl = WebGLUtils.setupWebGL(canvas); //found in
-	
-	// 1
-	// gl.viewport(0.0, 0.0, canvas.width, canvas.height)
-	// gl.clearColor(0.3921, 0.5843, 0.9294, 1.0);
-	// gl.clear(gl.COLOR_BUFFER_BIT);
-	// console.trace("Ended");
 
-	// 2
 	if (!gl) {
 		alert("WebGL isn't available");
 	}
@@ -52,10 +45,3 @@ function init() {
 	// display the vertices after those data has been on the GPU
 	gl.drawArrays(gl.TRIANGLES, 0, vertices.length);
 }
-
-// function render(gl)
-// {
-// 	// ? write what they do
-//     gl.clear(gl.COLOR_BUFFER_BIT);
-//     gl.drawArrays(gl.POINTS, 0, points.length);
-// }

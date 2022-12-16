@@ -1,4 +1,4 @@
-console.trace("Started");
+
 
 /** @type {WebGLRenderingContext} */
 var gl;
@@ -32,7 +32,7 @@ function init() {
 	}
 	
 	gl.viewport(0.0, 0.0, canvas.width, canvas.height);
-	gl.clearColor(1.0, 1.0, 1.0, 1.0);
+	gl.clearColor(0.3921, 0.5843, 0.9294, 1.0);
 
 	// load shaders and initialize atribute buffers
 	var program = initShaders(gl, "vertex-shader", "fragment-shader");

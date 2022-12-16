@@ -1,5 +1,3 @@
-console.trace("Started");
-
 /** @type {WebGLRenderingContext} */
 var gl;
 var program;
@@ -14,7 +12,7 @@ var vd = vec4(0.816497, -0.471405, -0.333333, 1);
 var normalsArray = [];
 
 // subdivision level of the sphere
-var divisionLevel = 1;
+var divisionLevel = 4;
 
 // light information 
 var lightPos = vec4(1.0, 1.0, 1.0, 1.0);
@@ -32,17 +30,7 @@ var alpha = 0;
 var eye = vec3(radius * Math.sin(alpha), 0.0, radius * Math.cos(alpha));
 var up, at, V, viewMatrixLoc;
 
-// transform matrix
-function transform(angle, direction, s, t) {
-	var R = rotate(angle, direction);
-	var Rx = rotateX(angle);
-	var Ry = rotateY(angle);
-	var Rz = rotateZ(angle);
-	var T = translate(t[0], t[1], t[2]);
-	var S = scalem(s[0], s[1], s[2]);
-
-	return mult(mult(T, R), S);
-}
+var id = null;
 
 init();
 function init() {
@@ -60,7 +48,6 @@ function init() {
 	gl = WebGLUtils.setupWebGL(canvas);
 	gl.enable(gl.DEPTH_TEST);
 	// gl.enable(gl.CULL_FACE);
-	// todo: does it depend on where I view the object
 
 	// setup
 	gl.viewport(0.0, 0.0, canvas.width, canvas.height);
@@ -106,42 +93,59 @@ function init() {
 	initSphere(divisionLevel);
 
 	// change subdivision level
-	coarsenButton.addEventListener("click", function () {subdivideLevel(0)});
-	divideButton.addEventListener("click", function () {subdivideLevel(1)});
+	// bug: speed up when subdivide and orbit
+	coarsenButton.addEventListener("click", function () {
+		subdivideLevel(0);
+		cancelAnimationFrame(id);
+		id = null;
+		render();
+	});
+	divideButton.addEventListener("click", function () {
+		subdivideLevel(1);
+		cancelAnimationFrame(id);
+		id = null;
+		render();
+	});
 
 	toggleOrbit.addEventListener("click", function () {
 		isOrbit = !isOrbit;
 		render();
 	});
 
-	// todo: what are those parameters and how do they change in 3 directions
-	// todo: what is event
-	// todo: go through agian these parameters with mtl and blender
 	radianceSlider.addEventListener('input', function () {
 		emission_le = scale(radianceSlider.value / 20.0, vec3(1.0, 1.0, 1.0));
 		gl.uniform3fv(emission_leLoc, flatten(emission_le));
+		cancelAnimationFrame(id);
+		id = null;
 		render();
 	});
 	ambientSlider.addEventListener('input', function () {
 		ambient_ka = scale(ambientSlider.value / 20.0, vec3(1.0, 0.0, 1.0));
 		gl.uniform3fv(ambient_kaLoc, flatten(ambient_ka));
+		cancelAnimationFrame(id);
+		id = null;
 		render();
 	});
 	diffuseSlider.addEventListener('input', function () {
 		diffuse_kd = scale(diffuseSlider.value / 20.0, vec3(1.0, 0.8, 0.0));
 		gl.uniform3fv(diffuse_kdLoc, flatten(diffuse_kd));
+		cancelAnimationFrame(id);
+		id = null;
 		render();
 	});
 	specularSlider.addEventListener('input', function () {
 		specular_ks = scale(specularSlider.value / 20.0, vec3(1.0, 1.0, 1.0));
 		gl.uniform3fv(specular_ksLoc, flatten(specular_ks));
+		cancelAnimationFrame(id);
+		id = null;
 		render();
 	});
 	shininessSlider.addEventListener('input', function () {
 		shininess = 1000 * shininessSlider.value / 20.0;
 		gl.uniform1f(shininessLoc, shininess);
-		// render();
-		requestAnimationFrame(render);
+		cancelAnimationFrame(id);
+		id = null;
+		render();
 	});
 	
 	render();
@@ -149,19 +153,16 @@ function init() {
 
 function render() {
 	if (isOrbit) {
-		setTimeout(() => {
-			gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
+		gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
 
-			alpha += 0.1;
-			V = lookAt(eye, at, up);
-			eye = vec3(radius * Math.sin(alpha), 0.0, radius * Math.cos(alpha));
+		alpha += 0.1;
+		V = lookAt(eye, at, up);
+		eye = vec3(radius * Math.sin(alpha), 0.0, radius * Math.cos(alpha));
 
-			gl.uniformMatrix4fv(viewMatrixLoc, false, flatten(V));
-			gl.drawArrays(gl.TRIANGLES, 0, pointsArray.length)
-			requestAnimationFrame(render);
-		}, 10);
+		gl.uniformMatrix4fv(viewMatrixLoc, false, flatten(V));
+		gl.drawArrays(gl.TRIANGLES, 0, pointsArray.length);
+		id = requestAnimationFrame(render);
 	} else {
-		console.log("rendering");
 		gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
 		gl.drawArrays(gl.TRIANGLES, 0, pointsArray.length);
 	}
@@ -180,14 +181,12 @@ function initSphere(numSubdivs) {
 	gl.vertexAttribPointer(vPosition, 4, gl.FLOAT, false, 0, 0);
 	gl.enableVertexAttribArray(vPosition);
 
-	// give errors if shader is not using the attributes
 	gl.nBuffer = gl.createBuffer();
 	gl.bindBuffer(gl.ARRAY_BUFFER, gl.nBuffer);
 	gl.bufferData(gl.ARRAY_BUFFER, flatten(normalsArray), gl.STATIC_DRAW);
 	var vNormal = gl.getAttribLocation(program, 'vNormal');
 	gl.vertexAttribPointer(vNormal, 4, gl.FLOAT, false, 0, 0);
 	gl.enableVertexAttribArray(vNormal);
-	// https://stackoverflow.com/questions/3665671/is-vertexattribpointer-needed-after-each-bindbuffer
 }
 
 function tetrahedron(v1, v2, v3, v4, numSubdivs) {
@@ -234,12 +233,16 @@ function subdivideLevel(type) {
 	pointsArray = [];
 	normalsArray = [];
 	initSphere(divisionLevel);
-	requestAnimationFrame(render);
 }
 
+// transform matrix
+function transform(angle, direction, s, t) {
+	var R = rotate(angle, direction);
+	var Rx = rotateX(angle);
+	var Ry = rotateY(angle);
+	var Rz = rotateZ(angle);
+	var T = translate(t[0], t[1], t[2]);
+	var S = scalem(s[0], s[1], s[2]);
 
-// There was unfortunately a mismatch between the notation in my slides and the notation used in the book and the worksheet. The textbook uses L_a, L_d and L_s to mean the incident light that affects the ambient term, the diffuse term, and the specular term of the lighting model, respectively. From a physical point of view, it does not make sense to distinguish between L_d and L_s. So I call them L_i and ask you to set them equal in the worksheet.
-
-// Unfortunately, in my slides, I used L_d to mean the diffusely reflected light and L_s to mean the specularly reflected light (which are very common choices of notation in graphics), but this is not a good choice because of the textbooks other use of L_d and L_s. I apologize for adding to the confusion in this part of the curriculum, which is already confusing due to the very poor code examples in the book where they mess up notation even more.
-
-// go over the book and understand this chapter
+	return mult(mult(T, R), S);
+}

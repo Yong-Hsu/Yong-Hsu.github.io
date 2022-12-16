@@ -1,5 +1,3 @@
-console.trace("Started");
-
 /** @type {WebGLRenderingContext} */
 var gl;
 var canvas;
@@ -35,7 +33,7 @@ function init() {
 	}
 	
 	gl.viewport(0.0, 0.0, canvas.width, canvas.height);
-	gl.clearColor(1.0, 1.0, 1.0, 1.0);
+	gl.clearColor(0.3921, 0.5843, 0.9294, 1.0);
 
 	// get all elements
 	var clearColorMenu = document.getElementById("ClearColors");
@@ -127,8 +125,6 @@ function init() {
 
 function render() {
 	gl.clear(gl.COLOR_BUFFER_BIT);
-	// todo: why have I not do simpler, do write the problem carefully, make the situation clear, the problem is not presented to you as before as clearly and it may disguide you
-	// how to finish these code faster
 	for (let i = 0; i < points.length; i++) {
 		gl.drawArrays(gl.POINTS, points[i], 1);
 	}

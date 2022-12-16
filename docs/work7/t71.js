@@ -1,6 +1,3 @@
-console.trace("Started");
-glBindTexture(GL_TEXTURE_2D, 0);
-
 /** @type {WebGLRenderingContext} */
 var gl;
 var program;
@@ -33,17 +30,13 @@ var up, at, V, viewMatrixLoc;
 
 init();
 function init() {
-	const toggleOrbit = document.getElementById('orbit');
-
 	const canvas = document.getElementById('gl-canvas');
 	gl = WebGLUtils.setupWebGL(canvas);
 	gl.enable(gl.DEPTH_TEST);
-	// gl.enable(gl.CULL_FACE);
-	// todo: does it depend on where I view the object
 
 	// setup
 	gl.viewport(0.0, 0.0, canvas.width, canvas.height);
-	gl.clearColor(1.0, 1.0, 1.0, 1.0);
+	gl.clearColor(0.3921, 0.5843, 0.9294, 1.0);
 	program = initShaders(gl, "vertex-shader", "fragment-shader");
 	gl.useProgram(program);
 
@@ -88,7 +81,7 @@ function init() {
 		'../res/textures/cm_back.png', // POSITIVE_Z
 		'../res/textures/cm_front.png']; // NEGATIVE_
 
-	gl.activeTexture(gl.TEXTURES);
+	gl.activeTexture(gl.TEXTURE0);
 	var texture = gl.createTexture();
 	gl.bindTexture(gl.TEXTURE_CUBE_MAP, texture);
 	gl.texParameteri(gl.TEXTURE_CUBE_MAP, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
@@ -109,6 +102,7 @@ function init() {
 	}
 	gl.uniform1i(gl.getUniformLocation(program, "texMap"), 0);
 
+	const toggleOrbit = document.getElementById('orbit');
 	toggleOrbit.addEventListener("click", function () {
 		isOrbit = !isOrbit;
 		if (g_tex_ready >= 6)	render();
@@ -116,22 +110,20 @@ function init() {
 
 	setTimeout(() => {
 		if (g_tex_ready >= 6)	render();
-	}, 600);
+	}, 300);
 }
 
 function render() {
 	if (isOrbit) {
-		setTimeout(() => {
-			gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
+		gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
 
-			alpha += 0.02;
-			V = lookAt(eye, at, up);
-			eye = vec3(radius * Math.sin(alpha), 0.0, radius * Math.cos(alpha));
+		alpha += 0.02;
+		V = lookAt(eye, at, up);
+		eye = vec3(radius * Math.sin(alpha), 0.0, radius * Math.cos(alpha));
 
-			gl.uniformMatrix4fv(viewMatrixLoc, false, flatten(V));
-			gl.drawArrays(gl.TRIANGLES, 0, pointsArray.length)
-			requestAnimationFrame(render);
-		}, 12);
+		gl.uniformMatrix4fv(viewMatrixLoc, false, flatten(V));
+		gl.drawArrays(gl.TRIANGLES, 0, pointsArray.length)
+		requestAnimationFrame(render);
 	} else {
 		gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
 		gl.drawArrays(gl.TRIANGLES, 0, pointsArray.length);
@@ -158,7 +150,6 @@ function initSphere(numSubdivs) {
 	var vNormal = gl.getAttribLocation(program, 'vNormal');
 	gl.vertexAttribPointer(vNormal, 4, gl.FLOAT, false, 0, 0);
 	gl.enableVertexAttribArray(vNormal);
-	// https://stackoverflow.com/questions/3665671/is-vertexattribpointer-needed-after-each-bindbuffer
 }
 
 function tetrahedron(v1, v2, v3, v4, numSubdivs) {

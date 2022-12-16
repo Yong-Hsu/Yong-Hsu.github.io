@@ -32,7 +32,7 @@ var radius = 1.5;
 var lightPos = getLightPos(0.0);
 
 var theta = 0.0; var beta = 0.0;
-var isOrbit = false; var isJump = false;
+var isOrbit = true; var isJump = true;
 
 var Mat_s; var shadowModelLoc; var Mat_p;
 
@@ -68,7 +68,6 @@ function init() {
 	var P = perspective(90, 1, 0.1, 20);
 	var V = mat4(); // debugging if needed
 	// var V = lookAt(vec3(0.0, 6.0, -3.0), vec3(0.0, 0.0, -3.0), vec3(0.0, 0.0, 1.0));
-
 
 	/* --------------------------------------------------------------------------------
 	* The shader for the quad
@@ -150,26 +149,22 @@ function render(model, program, programQuad) {
 	render_obj(program, model);
 
 	if (isJump || isOrbit) {
-		// todo: deprecate settimeout and use requestAnimationFrame to do the recursion
-		setTimeout(() => {
-			if (isJump) {
-				beta = beta + 0.03;
-				M = translate(0.0, -0.5 + 0.6 * Math.sin(beta), -3.0);
-				gl.uniformMatrix4fv(gl.getUniformLocation(program, "modelMatrix"), false, flatten(M));
-				uniformShadowModelMatrix(gl, program, M);
-			}
-			if (isOrbit) {
-				theta = theta + 0.2;
-				lightPos = getLightPos(theta);
-				gl.uniform4fv(gl.getUniformLocation(program, "lightPos"), flatten(lightPos));
-				uniformShadowModelMatrix(gl, program, M);
-			}
-			
-			window.requestAnimationFrame(function() {
-				render(model, program, programQuad);
-			});
+		if (isJump) {
+			beta = beta + 0.01;
+			M = translate(0.0, -0.5 + 0.6 * Math.sin(beta), -3.0);
+			gl.uniformMatrix4fv(gl.getUniformLocation(program, "modelMatrix"), false, flatten(M));
+			uniformShadowModelMatrix(gl, program, M);
+		}
+		if (isOrbit) {
+			theta = theta + 0.02;
+			lightPos = getLightPos(theta);
+			gl.uniform4fv(gl.getUniformLocation(program, "lightPos"), flatten(lightPos));
+			uniformShadowModelMatrix(gl, program, M);
+		}
 		
-		}, 100);
+		window.requestAnimationFrame(function() {
+			render(model, program, programQuad);
+		});
 	}
 }
 
@@ -191,7 +186,7 @@ function render_obj(program, model) {
 
 	if (!g_drawingInfo && g_objDoc && g_objDoc.isMTLComplete()) {
 		// OBJ and all MTLs are available
-		console.log('onReadComplete');
+		// console.log('onReadComplete');
 		g_drawingInfo = onReadComplete(gl, model, g_objDoc);
 	}
 	if (!g_drawingInfo) {
@@ -384,3 +379,14 @@ function uniformShadowModelMatrix (gl, program, M) {
 
 	gl.uniformMatrix4fv(gl.getUniformLocation(program, "shadowModelMatrix"), false, flatten(Mat_s));
 }
+
+
+
+// potential solution for subpage webgl conflicts
+// Use different uniform variable names for each page: You can assign different names to the uniform variables in each page to avoid conflicts.
+
+// Use separate WebGL programs for each page: Instead of using a single WebGL program for both pages, you can create separate WebGL programs for each page. This will allow each page to have its own set of uniform variables without interference from the other page.
+
+// Use a namespace for the uniform variables: You can use a namespace to prefix the uniform variable names in each page, which will make it easier to distinguish between the variables used by each page.
+
+// Use a shared WebGL context: If you need to share data between the two pages, you can create a shared WebGL context that both pages can use. This will allow you to use the same set of uniform variables in both pages without conflicts.

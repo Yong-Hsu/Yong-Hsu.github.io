@@ -1,5 +1,3 @@
-console.trace("Started");
-
 /** @type {WebGLRenderingContext} */
 var gl;
 var program;
@@ -37,9 +35,7 @@ function init() {
 	const canvas = document.getElementById('gl-canvas');
 	gl = WebGLUtils.setupWebGL(canvas);
 	gl.enable(gl.DEPTH_TEST);
-	// gl.enable(gl.CULL_FACE);
-	// todo: does it depend on where I view the object
-
+	
 	// setup
 	gl.viewport(0.0, 0.0, canvas.width, canvas.height);
 	gl.clearColor(0.1, 0.1, 0.1, 1.0);
@@ -79,7 +75,6 @@ function init() {
 	gl.nBuffer = null;
 	initSphere(divisionLevel = 6);
 
-
 	// load local images
 	var image = document.createElement('img');
 	image.crossorigin = 'anonymous';
@@ -88,9 +83,10 @@ function init() {
 		gl.bindTexture(gl.TEXTURE_2D, texture);
 		// gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, true);
 		gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGB, gl.RGB, gl.UNSIGNED_BYTE, image);
-		gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.NEAREST);
+		gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR_MIPMAP_NEAREST);
 		gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.NEAREST);
-		// todo : why using mag and min together
+		gl.generateMipmap(gl.TEXTURE_2D);
+		// why using mag and min together, as different parts of the texture requires different method
 	};
 	image.src = '../res/earth.jpg';
 	
@@ -103,22 +99,20 @@ function init() {
 
 	setTimeout(() => {
 		render();
-	}, 600);
+	}, 300);
 }
 
 function render() {
 	if (isOrbit) {
-		setTimeout(() => {
-			gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
+		gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
 
-			alpha += 0.02;
-			V = lookAt(eye, at, up);
-			eye = vec3(radius * Math.sin(alpha), 0.0, radius * Math.cos(alpha));
+		alpha += 0.01;
+		V = lookAt(eye, at, up);
+		eye = vec3(radius * Math.sin(alpha), 0.0, radius * Math.cos(alpha));
 
-			gl.uniformMatrix4fv(viewMatrixLoc, false, flatten(V));
-			gl.drawArrays(gl.TRIANGLES, 0, pointsArray.length)
-			requestAnimationFrame(render);
-		}, 12);
+		gl.uniformMatrix4fv(viewMatrixLoc, false, flatten(V));
+		gl.drawArrays(gl.TRIANGLES, 0, pointsArray.length)
+		requestAnimationFrame(render);
 	} else {
 		gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
 		gl.drawArrays(gl.TRIANGLES, 0, pointsArray.length);
@@ -145,7 +139,6 @@ function initSphere(numSubdivs) {
 	var vNormal = gl.getAttribLocation(program, 'vNormal');
 	gl.vertexAttribPointer(vNormal, 4, gl.FLOAT, false, 0, 0);
 	gl.enableVertexAttribArray(vNormal);
-	// https://stackoverflow.com/questions/3665671/is-vertexattribpointer-needed-after-each-bindbuffer
 }
 
 function tetrahedron(v1, v2, v3, v4, numSubdivs) {

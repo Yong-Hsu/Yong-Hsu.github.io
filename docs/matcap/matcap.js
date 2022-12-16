@@ -6,11 +6,26 @@ var program;
 var g_objDoc = null; // The information of OBJ file
 var g_drawingInfo = null; // The information for drawing 3D model
 
-cancelAnimationFrame(id);
-var id = null;
+// init();
+$(function() {
+	// jquery for loadingt the links
+	$.get("/matcap/index.json", function(list) {
+        $(list).each(function (i, v) {
+            var img = $("<img/>");
+            img.attr("src", "../res/matCap512/"+v)
+			.addClass("matcap-image").addClass("img-circle").css("cursor", "pointer");
+			// img.attr("style", "zoom: 10%");
+            $("#matcap-list").append(img);
 
-init();
-function init() {
+            img.click(function () {
+				initTexture(gl, program, $(this).attr("src"));
+				// model = initObject(gl, "../res/mask.obj", 20);
+                // model.material.maps[0] = new fw.Texture("matcapTexture", $(this).attr("src"));
+            });
+            $("#matcap-list img:eq(3)").trigger("click");
+        });
+    }, "json");
+
 	// webgl setup
 	canvas = document.getElementById("gl-canvas");
 	gl = WebGLUtils.setupWebGL(canvas);
@@ -51,11 +66,11 @@ function init() {
 
 	// load texture for the Matcap
 	gl.activeTexture(gl.TEXTURE0);
-	initTexture(gl, program, '../res/matCap512/1C70C6_09294C_0F3F73_52B3F6-512px.png');
+	initTexture(gl, program, '../res/matCap512/1D2424_565F66_4E555A_646C6E-512px.png');
 
 	// object loading
 	// var model = initObject(gl, "../res/engraving.obj", 60);
-	var model = initObject(gl, "../res/mask.obj", 60);
+	var model = initObject(gl, "../res/triple.obj", 20);
 
 	// render
 	var render = function () {
@@ -79,14 +94,14 @@ function init() {
 		gl.uniformMatrix4fv(viewMatrixLoc, false, flatten(V2));
 
 		gl.drawElements(gl.TRIANGLES, g_drawingInfo.indices.length, gl.UNSIGNED_INT, 0);
-		id = requestAnimationFrame(render);
+		requestAnimationFrame(render);
 	}
 
 	setTimeout(() => {
 		g_drawingInfo = checkModel(model);
 		render();
 	}, 150);
-};
+});
 
 // function for initialize texture
 function initTexture(gl, program, image_path) {
@@ -172,7 +187,7 @@ function initEventHandlers(canvas, q_rot, q_inc, pan_and_eye) {
 function checkModel(model) {
 	if (!g_drawingInfo && g_objDoc && g_objDoc.isMTLComplete()) {
 		// OBJ and all MTLs are available
-		console.log('onReadComplete');
+		// console.log('onReadComplete');
 		g_drawingInfo = onReadComplete(gl, model, g_objDoc);
 		return g_drawingInfo;
 	}

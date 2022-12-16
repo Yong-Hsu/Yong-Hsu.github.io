@@ -1,4 +1,4 @@
-console.trace("Started");
+
 
 /** @type {WebGLRenderingContext} */
 var gl;
