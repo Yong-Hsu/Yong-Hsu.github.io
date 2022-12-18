@@ -26,9 +26,7 @@
 	precision highp float;
 	attribute vec3 a_Position;
 	attribute vec3 a_Normal;
-	attribute vec4 a_Color;
 
-	varying vec4 fColor;
 	varying vec4 vPos;
 	varying vec3 vNorm;
 
@@ -40,7 +38,6 @@
 	{
 		vPos = vec4(a_Position, 1.0);
 		vNorm = normalize(vec3(modelMatrix * vec4(a_Normal, 0.0))); 
-		fColor = a_Color;
 
 		gl_Position = projectionMatrix * viewMatrix * modelMatrix * vPos;
 	}
@@ -49,13 +46,10 @@
 <script id="fragment-shader" type="x-shader/x-fragment">
 	precision highp float;
 
-	varying vec4 fColor;
-	varying vec4 vPos;
 	varying vec3 vNorm;
 
 	uniform mat4 modelMatrix;
 	uniform mat4 viewMatrix;
-	uniform mat4 projectionMatrix;
 
 	uniform sampler2D matcapTexture; 
 
@@ -64,7 +58,7 @@
 		// Move normal to view space
 		highp vec2 muv = vec2(viewMatrix * vec4(normalize(vNorm), 0)) * 0.5 + vec2(0.5, 0.5);
 		// read texture inverting Y value
-		gl_FragColor = texture2D(matcapTexture, vec2(muv.x, 1.0 - muv.y));
+		gl_FragColor = texture2D(matcapTexture, vec2(1.0-muv.x, muv.y));
 	}
 </script>
 
@@ -73,7 +67,15 @@
 	<canvas id='gl-canvas' height="512" width="512">
         "WebGL isn't available"
     </canvas>
+	<button type="button" class="btn btn-primary btn-sm" id="toggleMove"> Toggle rotating </button>
+
+> The last line's seven materials comes from real-life photography.
+>
+> And the others come from the [MatCaps GitHub repositry](https://github.com/nidorx/matcaps).
+
 </body>
+
+
 
 <div class="panel panel-default", style="width: 512px;">
 	<div class="panel-heading">Select material</div>
@@ -93,5 +95,5 @@ file_names = listdir(folder_path)
 with open("index.json", "w") as outfile:
     json.dump(file_names, outfile) -->
 
-<br>
 </html>
+

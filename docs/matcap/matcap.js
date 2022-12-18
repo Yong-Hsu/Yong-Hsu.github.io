@@ -6,6 +6,9 @@ var program;
 var g_objDoc = null; // The information of OBJ file
 var g_drawingInfo = null; // The information for drawing 3D model
 
+var angle = 0;
+var orbit = true;
+
 // init();
 $(function() {
 	// jquery for loadingt the links
@@ -14,13 +17,10 @@ $(function() {
             var img = $("<img/>");
             img.attr("src", "../res/matCap512/"+v)
 			.addClass("matcap-image").addClass("img-circle").css("cursor", "pointer");
-			// img.attr("style", "zoom: 10%");
             $("#matcap-list").append(img);
 
             img.click(function () {
 				initTexture(gl, program, $(this).attr("src"));
-				// model = initObject(gl, "../res/mask.obj", 20);
-                // model.material.maps[0] = new fw.Texture("matcapTexture", $(this).attr("src"));
             });
             $("#matcap-list img:eq(3)").trigger("click");
         });
@@ -47,7 +47,7 @@ $(function() {
 	var q_inc = new Quaternion();
 	// camera setting
 	M = transform(0, [1, 1, 1], [1, 1, 1], [0.0, 0.0, 0.0]);
-	var eye = vec3(0.0, 0.0, -180.0);
+	var eye = vec3(0.0, 0.0, 180.0);
 	var at = vec3(0, 0, 0);
 	var up = vec3(0.0, 1.0, 0.0);
 	var V = lookAt(q_rot.apply(eye), at, q_rot.apply(up));
@@ -69,15 +69,16 @@ $(function() {
 	initTexture(gl, program, '../res/matCap512/1D2424_565F66_4E555A_646C6E-512px.png');
 
 	// object loading
-	// var model = initObject(gl, "../res/engraving.obj", 60);
 	var model = initObject(gl, "../res/triple.obj", 20);
+
+	const toggleMove = document.getElementById("toggleMove");
+	toggleMove.addEventListener('click', function () {
+		orbit = !orbit;
+	});
 
 	// render
 	var render = function () {
 		gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
-		
-		// not changing anything
-		// todo: remove right click menu
 
 		var c = subtract(
 			at, 
@@ -93,6 +94,12 @@ $(function() {
 		);
 		gl.uniformMatrix4fv(viewMatrixLoc, false, flatten(V2));
 
+		if (orbit) {
+			angle = angle + 0.5;
+			M = transform(angle, [0, 0, 1], [1, 1, 1], [0.0, 0.0, 0.0]);
+			gl.uniformMatrix4fv(modelMatrixLoc, false, flatten(M));
+		}
+
 		gl.drawElements(gl.TRIANGLES, g_drawingInfo.indices.length, gl.UNSIGNED_INT, 0);
 		requestAnimationFrame(render);
 	}
@@ -100,7 +107,7 @@ $(function() {
 	setTimeout(() => {
 		g_drawingInfo = checkModel(model);
 		render();
-	}, 150);
+	}, 800);
 });
 
 // function for initialize texture
@@ -113,8 +120,8 @@ function initTexture(gl, program, image_path) {
 		gl.bindTexture(gl.TEXTURE_2D, texture);
 		
 		gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGB, gl.RGB, gl.UNSIGNED_BYTE, image);
-		gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.NEAREST);
-		gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.NEAREST);
+		gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
+		gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
 	};
 
 	image.src = image_path;
@@ -261,7 +268,7 @@ function onReadOBJFile(fileString, fileName, gl, o, scale, reverse) {
 }
 
 // OBJ File has been read completely
-function onReadComplete(gl, model, objDoc) {
+function onReadComplete(gl, model, objDoc) { 
 	// Acquire the vertex coordinates and colors from OBJ file
 	var drawingInfo = objDoc.getDrawingInfo();
 
