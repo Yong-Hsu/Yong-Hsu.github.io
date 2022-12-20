@@ -2,7 +2,7 @@
 <!-- docsify serve docs -->
 
 * [**ReadMe**](/) 
-<!-- * [**02562** Lab Journals](rendering/rendering.md) -->
+* [**02562** Lab Journals](rendering/rendering.md)
 
 - 02561 Worksheet1
     - [Part1 & 2](work1/t11.md)
