@@ -10,6 +10,7 @@
 1. [Worksheet 8 - BRDF, Fresnel Reflectance, and Absorption](#worksheet-8)
 1. [Worksheet 9 - Photon Mapping](#worksheet-9)
 1. [Worksheet 10 - Rendering with Blender](#worksheet-10)
+1. [Project: Ray tracing with OptiX](#project-OptiX)
 
 <!--  
 all the deliverables listed in the worksheets. 
@@ -864,6 +865,12 @@ float3 PhotonCaustics::shade(const Ray& r, HitInfo& hit, bool emit) const
 >
 > In the cycles, we can not separate how the image is rendered, which means we can not try to see some middle results. In our framework, GPU utilization is missing and some extra functions such as denoising.
 
+
+
+## project OptiX
+| ![](res/optix-indirect.png) | ![](res/optix-refract.png) | ![](res/optix2-with.png) |
+|:--:|:--:|:--:|
+| <b></b> | <b></b> | <b></b> |
 
 <!-- | ![](res/) |
 |:--:|
