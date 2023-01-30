@@ -65,7 +65,7 @@ function init() {
 
 	// object loading
 	// var model = initObject(gl, "../res/engraving.obj", 60);
-	var model = initObject(gl, "../res/mask.obj", 60);
+	var model = initObject(gl, "../res/test.obj", 60);
 
 	// render
 	var render = function () {

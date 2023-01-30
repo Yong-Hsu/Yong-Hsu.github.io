@@ -2,9 +2,9 @@
 <!-- docsify serve docs -->
 
 * [**ReadMe**](/) 
-* [Rendering Lab Journals](rendering/rendering.md)
+* [Rendering c++](rendering/rendering.md)
 
-- Computer graphics Lab Journals ⏬⏬
+- Computer graphics WebGL ⏬⏬
     -  10 - Virtual track ball
         - [Part 1](work10/t101.md)
         - [Part 2 & 3](work10/t103.md)
