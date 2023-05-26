@@ -55,7 +55,13 @@
 
 * [Graphics Project MatCaps](matcap/matcap.md)
 
+* [Generative methods](generative.md)
 
+* [Mesh Processing](mesh.md)
+
+* [Scattering Translucent](scattering.md)
+
+* [DirectX start](directx.md)
 
 <!-- <img src="rendering/res/test.png" 
     alt="Picture" 
