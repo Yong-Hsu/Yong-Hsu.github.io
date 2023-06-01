@@ -57,11 +57,11 @@
 
 * [Generative methods](generative.md)
 
-* [Mesh Processing](mesh.md)
+<!-- * [Mesh Processing](mesh.md) -->
 
 * [Scattering Translucent](scattering.md)
 
-* [DirectX start](directx.md)
+<!-- * [DirectX start](directx.md) -->
 
 <!-- <img src="rendering/res/test.png" 
     alt="Picture" 
