@@ -1,7 +1,7 @@
 <!-- Rendering of transparent and metal material in cornell box
 ![preview](resource/box1.png) -->
 
-Rendering of elephant and bunny in optix path tracing framework and cuda, with multiple scattering shader implemented from [Eric Heitz's Research Page (wordpress.com)](https://eheitzresearch.wordpress.com/240-2/)
+Rendering of elephant and bunny in **optix path tracing framework and cuda**, with multiple scattering shader implemented from [Eric Heitz's Research Page (wordpress.com)](https://eheitzresearch.wordpress.com/240-2/)
 
 ![flat](resource/box2.png)
 
