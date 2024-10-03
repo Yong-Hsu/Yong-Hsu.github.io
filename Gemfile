@@ -13,6 +13,9 @@ source "https://rubygems.org"
 
 # To upgrade, run `bundle update`.
 
+gem "github-pages", group: :jekyll_plugins
+gem "jekyll-include-cache", group: :jekyll_plugins
+
 gem "jekyll"
 gem "minimal-mistakes-jekyll"
 
@@ -26,5 +29,6 @@ gem "minimal-mistakes-jekyll"
 # If you have any other plugins, put them here!
 # Cf. https://jekyllrb.com/docs/plugins/installation/
 
-# group :jekyll_plugins do
-# end
+group :jekyll_plugins do
+    
+end
