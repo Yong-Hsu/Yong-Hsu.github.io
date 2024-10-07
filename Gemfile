@@ -30,5 +30,6 @@ gem "jekyll-include-cache", group: :jekyll_plugins
 # Cf. https://jekyllrb.com/docs/plugins/installation/
 
 group :jekyll_plugins do
-
+  gem "jekyll-watch"
+  gem "jekyll-livereload"
 end
